@@ -19,12 +19,10 @@ public class RegisterRequest extends StringRequest{
         parameters.put("userPwd", userPwd);
         parameters.put("userName", userName);
         parameters.put("userAge", userAge);
-        Log.d("registerRequest2", "123");
     }
 
     @Override
     public Map<String, String> getParams(){
-        Log.d("registerRequest3", "123");
         return parameters;
     }
 }

@@ -1,13 +1,14 @@
 package com.example.it.android_nadongbin;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -27,8 +28,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        idEdit = (EditText) findViewById(R.id.idEdit);
-        pwdEdit = (EditText) findViewById(R.id.pwdEdit);
+        idEdit = (EditText) findViewById(R.id.idText);
+        pwdEdit = (EditText) findViewById(R.id.pwdText);
 
 
         final Button loginBtn = (Button) findViewById(R.id.loginBtn);
@@ -70,7 +71,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }else{
                         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                         builder.setMessage("로그인에 실패했습니다.")
-                                .setNegativeButton("다시 시도", null)
+                                .setNegativeButton("다시 시도", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                })
                                 .create()
                                 .show();
                     }

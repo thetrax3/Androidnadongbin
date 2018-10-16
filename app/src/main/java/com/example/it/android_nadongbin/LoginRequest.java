@@ -1,5 +1,7 @@
 package com.example.it.android_nadongbin;
 
+import android.util.Log;
+
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 
@@ -13,7 +15,7 @@ public class LoginRequest  extends StringRequest {
     public LoginRequest(String userID, String userPwd, Response.Listener<String> listener){
         super(Method.POST, URL, listener , null);
         parameters = new HashMap<>();
-        parameters.put("userId", userID);
+        parameters.put("userID", userID);
         parameters.put("userPwd",userPwd);
     }
 

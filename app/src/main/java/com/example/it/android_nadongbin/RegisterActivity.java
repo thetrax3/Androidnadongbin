@@ -68,14 +68,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                  * response를 받아 저장하는 클래스
                  * php의 결과값이 {"success":true} 이어야 접근가능
                  */
-                Log.d("try", "test1");
                 try {
-                    Log.d("try", "test2");
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
-                    Log.d("try", String.valueOf(success));
                     if (success) {
-                        Log.d(userID, "LoginActivity1: ");
                         builder = new AlertDialog.Builder(RegisterActivity.this);
                         builder.setMessage("Enable")
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -91,7 +87,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                         //new DialogDismisser();
                     } else {
-                        Log.d(userID, "LoginActivity2: ");
                         builder = new AlertDialog.Builder(RegisterActivity.this);
                         builder.setMessage("UnEnable")
                                 .setNegativeButton("RETRY", new DialogInterface.OnClickListener() {
@@ -110,8 +105,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         RegisterRequest registerRequest = new RegisterRequest(userID, userPwd, userName, userAge, responseListener);
         RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
         queue.add(registerRequest);//registerRequest에서 받은 정보를 추가하는 부분
-
-        Log.d(userID, "LoginActivity3: ");
     }
     public class DialogDismisser{
         public void dismiss(DialogInterface d){
@@ -119,7 +112,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             try{
                 if(d instanceof  AlertDialog){
                     if(((AlertDialog) d).isShowing())
-                        ((AlertDialog)d).dismiss();
+                        d.dismiss();
                 }
             }catch (Exception e){
                 e.printStackTrace();
