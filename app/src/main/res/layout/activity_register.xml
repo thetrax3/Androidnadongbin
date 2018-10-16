@@ -55,5 +55,8 @@
         android:text="Registering"
         tools:layout_editor_absoluteX="3dp"
         tools:layout_editor_absoluteY="145dp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:background="@drawable/btn_login"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="10dp"/>
 </LinearLayout>

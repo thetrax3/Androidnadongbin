@@ -1,22 +1,34 @@
 package com.example.it.android_nadongbin;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 
 import java.util.List;
 
 public class UserListAdapter extends BaseAdapter {
     private Context context;
     private List<User> userList;
+    private Activity parentActivity;
+    private List<User> saveList;
 
-    public UserListAdapter(Context context, List<User> userList){
+    public UserListAdapter(Context context, List<User> userList, Activity parentActivity, List<User> saveList){
         this.context = context;
         this.userList = userList;
+        this.parentActivity = parentActivity;
+        this.saveList = saveList;
     }
 
     @Override
@@ -35,10 +47,10 @@ public class UserListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
         View v = View.inflate(context, R.layout.activity_user, null);
-        TextView userID = (TextView) v.findViewById(R.id.userID);
-        TextView userPwd = (TextView) v.findViewById(R.id.userPwd);
+        final TextView userID = (TextView) v.findViewById(R.id.userID);
+        final TextView userPwd = (TextView) v.findViewById(R.id.userPwd);
         TextView userName = (TextView) v.findViewById(R.id.userName);
         TextView userAge = (TextView) v.findViewById(R.id.userAge);
 
@@ -48,11 +60,40 @@ public class UserListAdapter extends BaseAdapter {
         userAge.setText(userList.get(i).getUserAge());
         v.setTag(userList.get(i).getUserID());
 
-        Log.d(userList.get(i).getUserID(), "ID: ");
-        Log.d(userList.get(i).getUserPwd(), "Pwd: ");
-        Log.d(userList.get(i).getUserName(), "Name: ");
-        Log.d(userList.get(i).getUserAge(), "Age: ");
+        Button delBtn = v.findViewById(R.id.delBtn);
+        delBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try{
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+                            if(success){
+                                userList.remove(i);
+                                for(int i =0; i<saveList.size();i++){
+                                    if(saveList.get(i).getUserID().equals(userID.getText().toString())){
+                                        saveList.remove(i);
+                                        break;
+                                    }
+                                }
+                                notifyDataSetChanged();
+
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                DeleteRequest deleteRequest = new DeleteRequest(userID.getText().toString(), responseListener);
+                RequestQueue queue = Volley.newRequestQueue(parentActivity);
+                queue.add(deleteRequest);
+                Log.d(userID.getText().toString(), "<<ID ");
+            }
+        });
 
         return v;
     }
+
 }
